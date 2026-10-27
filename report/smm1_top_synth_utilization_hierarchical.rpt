@@ -1,0 +1,39 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1 (win64) Build 2902540 Wed May 27 19:54:49 MDT 2020
+| Date         : Thu Oct 22 21:47:29 2026
+| Host         : DESKTOP-D6P5K5D running 64-bit major release  (build 9200)
+| Command      : report_utilization -hierarchical -file reports/smm1_top_synth_utilization_hierarchical.rpt
+| Design       : smm1_top
+| Device       : xcku115flva1517-1
+| Design State : Synthesized
+------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++--------------------+-------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+|      Instance      |       Module      | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs  | RAMB36 | RAMB18 | URAM | DSP Blocks |
++--------------------+-------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+| smm1_top           |             (top) |       7471 |       6869 |       0 |  602 | 15871 |      0 |      0 |    0 |        448 |
+|   (smm1_top)       |             (top) |         20 |         20 |       0 |    0 |    21 |      0 |      0 |    0 |          0 |
+|   u_smm1_cores     |        smm1_cores |       2809 |       2207 |       0 |  602 | 10038 |      0 |      0 |    0 |        448 |
+|     (u_smm1_cores) |        smm1_cores |          2 |          2 |       0 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     u_q1           | mm_ws_systolic__4 |        401 |        315 |       0 |   86 |  1434 |      0 |      0 |    0 |         64 |
+|     u_q2           | mm_ws_systolic__5 |        401 |        315 |       0 |   86 |  1434 |      0 |      0 |    0 |         64 |
+|     u_q3           | mm_ws_systolic__6 |        401 |        315 |       0 |   86 |  1434 |      0 |      0 |    0 |         64 |
+|     u_q4           | mm_ws_systolic__7 |        401 |        315 |       0 |   86 |  1434 |      0 |      0 |    0 |         64 |
+|     u_q5           | mm_ws_systolic__8 |        401 |        315 |       0 |   86 |  1434 |      0 |      0 |    0 |         64 |
+|     u_q6           | mm_ws_systolic__9 |        401 |        315 |       0 |   86 |  1434 |      0 |      0 |    0 |         64 |
+|     u_q7           |    mm_ws_systolic |        401 |        315 |       0 |   86 |  1434 |      0 |      0 |    0 |         64 |
+|   u_strassen_post  |     strassen_post |       3105 |       3105 |       0 |    0 |  3938 |      0 |      0 |    0 |          0 |
+|   u_strassen_pre   |      strassen_pre |       1537 |       1537 |       0 |    0 |  1874 |      0 |      0 |    0 |          0 |
++--------------------+-------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+
+

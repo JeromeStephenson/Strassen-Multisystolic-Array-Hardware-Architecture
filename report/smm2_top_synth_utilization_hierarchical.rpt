@@ -1,0 +1,121 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1 (win64) Build 2902540 Wed May 27 19:54:49 MDT 2020
+| Date         : Thu Oct 22 22:19:14 2026
+| Host         : DESKTOP-D6P5K5D running 64-bit major release  (build 9200)
+| Command      : report_utilization -hierarchical -file reports/smm2_top_synth_utilization_hierarchical.rpt
+| Design       : smm2_top
+| Device       : xcku115flva1517-1
+| Design State : Synthesized
+------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++-----------------------------------+-------------------------------+------------+------------+---------+------+--------+--------+--------+------+------------+
+|              Instance             |             Module            | Total LUTs | Logic LUTs | LUTRAMs | SRLs |   FFs  | RAMB36 | RAMB18 | URAM | DSP Blocks |
++-----------------------------------+-------------------------------+------------+------------+---------+------+--------+--------+--------+------+------------+
+| smm2_top                          |                         (top) |      72372 |      67913 |       0 | 4459 | 139589 |      0 |      0 |    0 |       3136 |
+|   (smm2_top)                      |                         (top) |         21 |         21 |       0 |    0 |     21 |      0 |      0 |    0 |          0 |
+|   g_smm1_cores[0].u_smm1_core     |                  smm1_core__1 |       7611 |       6974 |       0 |  637 |  16525 |      0 |      0 |    0 |        448 |
+|     (g_smm1_cores[0].u_smm1_core) |                  smm1_core__1 |          1 |          1 |       0 |    0 |      3 |      0 |      0 |    0 |          0 |
+|     u_smm1_cores                  |                 smm1_cores__1 |       2872 |       2235 |       0 |  637 |  10598 |      0 |      0 |    0 |        448 |
+|       (u_smm1_cores)              |                 smm1_cores__1 |          2 |          2 |       0 |    0 |      0 |      0 |      0 |    0 |          0 |
+|       u_q1                        |             mm_ws_systolic__4 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q2                        |             mm_ws_systolic__5 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q3                        |             mm_ws_systolic__6 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q4                        |             mm_ws_systolic__7 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q5                        |             mm_ws_systolic__8 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q6                        |             mm_ws_systolic__9 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q7                        |            mm_ws_systolic__10 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|     u_strassen_post               |              strassen_post__1 |       3105 |       3105 |       0 |    0 |   3938 |      0 |      0 |    0 |          0 |
+|     u_strassen_pre                |               strassen_pre__1 |       1633 |       1633 |       0 |    0 |   1986 |      0 |      0 |    0 |          0 |
+|   g_smm1_cores[1].u_smm1_core     |                  smm1_core__2 |       7611 |       6974 |       0 |  637 |  16525 |      0 |      0 |    0 |        448 |
+|     (g_smm1_cores[1].u_smm1_core) |                  smm1_core__2 |          1 |          1 |       0 |    0 |      3 |      0 |      0 |    0 |          0 |
+|     u_smm1_cores                  |                 smm1_cores__2 |       2872 |       2235 |       0 |  637 |  10598 |      0 |      0 |    0 |        448 |
+|       (u_smm1_cores)              |                 smm1_cores__2 |          2 |          2 |       0 |    0 |      0 |      0 |      0 |    0 |          0 |
+|       u_q1                        |            mm_ws_systolic__11 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q2                        |            mm_ws_systolic__12 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q3                        |            mm_ws_systolic__13 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q4                        |            mm_ws_systolic__14 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q5                        |            mm_ws_systolic__15 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q6                        |            mm_ws_systolic__16 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q7                        |            mm_ws_systolic__17 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|     u_strassen_post               |              strassen_post__2 |       3105 |       3105 |       0 |    0 |   3938 |      0 |      0 |    0 |          0 |
+|     u_strassen_pre                |               strassen_pre__2 |       1633 |       1633 |       0 |    0 |   1986 |      0 |      0 |    0 |          0 |
+|   g_smm1_cores[2].u_smm1_core     |                  smm1_core__3 |       7611 |       6974 |       0 |  637 |  16525 |      0 |      0 |    0 |        448 |
+|     (g_smm1_cores[2].u_smm1_core) |                  smm1_core__3 |          1 |          1 |       0 |    0 |      3 |      0 |      0 |    0 |          0 |
+|     u_smm1_cores                  |                 smm1_cores__3 |       2872 |       2235 |       0 |  637 |  10598 |      0 |      0 |    0 |        448 |
+|       (u_smm1_cores)              |                 smm1_cores__3 |          2 |          2 |       0 |    0 |      0 |      0 |      0 |    0 |          0 |
+|       u_q1                        |            mm_ws_systolic__18 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q2                        |            mm_ws_systolic__19 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q3                        |            mm_ws_systolic__20 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q4                        |            mm_ws_systolic__21 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q5                        |            mm_ws_systolic__22 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q6                        |            mm_ws_systolic__23 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q7                        |            mm_ws_systolic__24 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|     u_strassen_post               |              strassen_post__3 |       3105 |       3105 |       0 |    0 |   3938 |      0 |      0 |    0 |          0 |
+|     u_strassen_pre                |               strassen_pre__3 |       1633 |       1633 |       0 |    0 |   1986 |      0 |      0 |    0 |          0 |
+|   g_smm1_cores[3].u_smm1_core     |                  smm1_core__4 |       7611 |       6974 |       0 |  637 |  16525 |      0 |      0 |    0 |        448 |
+|     (g_smm1_cores[3].u_smm1_core) |                  smm1_core__4 |          1 |          1 |       0 |    0 |      3 |      0 |      0 |    0 |          0 |
+|     u_smm1_cores                  |                 smm1_cores__4 |       2872 |       2235 |       0 |  637 |  10598 |      0 |      0 |    0 |        448 |
+|       (u_smm1_cores)              |                 smm1_cores__4 |          2 |          2 |       0 |    0 |      0 |      0 |      0 |    0 |          0 |
+|       u_q1                        |            mm_ws_systolic__25 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q2                        |            mm_ws_systolic__26 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q3                        |            mm_ws_systolic__27 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q4                        |            mm_ws_systolic__28 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q5                        |            mm_ws_systolic__29 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q6                        |            mm_ws_systolic__30 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q7                        |            mm_ws_systolic__31 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|     u_strassen_post               |              strassen_post__4 |       3105 |       3105 |       0 |    0 |   3938 |      0 |      0 |    0 |          0 |
+|     u_strassen_pre                |               strassen_pre__4 |       1633 |       1633 |       0 |    0 |   1986 |      0 |      0 |    0 |          0 |
+|   g_smm1_cores[4].u_smm1_core     |                  smm1_core__5 |       7611 |       6974 |       0 |  637 |  16525 |      0 |      0 |    0 |        448 |
+|     (g_smm1_cores[4].u_smm1_core) |                  smm1_core__5 |          1 |          1 |       0 |    0 |      3 |      0 |      0 |    0 |          0 |
+|     u_smm1_cores                  |                 smm1_cores__5 |       2872 |       2235 |       0 |  637 |  10598 |      0 |      0 |    0 |        448 |
+|       (u_smm1_cores)              |                 smm1_cores__5 |          2 |          2 |       0 |    0 |      0 |      0 |      0 |    0 |          0 |
+|       u_q1                        |            mm_ws_systolic__32 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q2                        |            mm_ws_systolic__33 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q3                        |            mm_ws_systolic__34 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q4                        |            mm_ws_systolic__35 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q5                        |            mm_ws_systolic__36 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q6                        |            mm_ws_systolic__37 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q7                        |            mm_ws_systolic__38 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|     u_strassen_post               |              strassen_post__5 |       3105 |       3105 |       0 |    0 |   3938 |      0 |      0 |    0 |          0 |
+|     u_strassen_pre                |               strassen_pre__5 |       1633 |       1633 |       0 |    0 |   1986 |      0 |      0 |    0 |          0 |
+|   g_smm1_cores[5].u_smm1_core     |                  smm1_core__6 |       7611 |       6974 |       0 |  637 |  16525 |      0 |      0 |    0 |        448 |
+|     (g_smm1_cores[5].u_smm1_core) |                  smm1_core__6 |          1 |          1 |       0 |    0 |      3 |      0 |      0 |    0 |          0 |
+|     u_smm1_cores                  |                 smm1_cores__6 |       2872 |       2235 |       0 |  637 |  10598 |      0 |      0 |    0 |        448 |
+|       (u_smm1_cores)              |                 smm1_cores__6 |          2 |          2 |       0 |    0 |      0 |      0 |      0 |    0 |          0 |
+|       u_q1                        |            mm_ws_systolic__39 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q2                        |            mm_ws_systolic__40 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q3                        |            mm_ws_systolic__41 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q4                        |            mm_ws_systolic__42 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q5                        |            mm_ws_systolic__43 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q6                        |            mm_ws_systolic__44 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q7                        |            mm_ws_systolic__45 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|     u_strassen_post               |              strassen_post__6 |       3105 |       3105 |       0 |    0 |   3938 |      0 |      0 |    0 |          0 |
+|     u_strassen_pre                |               strassen_pre__6 |       1633 |       1633 |       0 |    0 |   1986 |      0 |      0 |    0 |          0 |
+|   g_smm1_cores[6].u_smm1_core     |                     smm1_core |       7611 |       6974 |       0 |  637 |  16525 |      0 |      0 |    0 |        448 |
+|     (g_smm1_cores[6].u_smm1_core) |                     smm1_core |          1 |          1 |       0 |    0 |      3 |      0 |      0 |    0 |          0 |
+|     u_smm1_cores                  |                    smm1_cores |       2872 |       2235 |       0 |  637 |  10598 |      0 |      0 |    0 |        448 |
+|       (u_smm1_cores)              |                    smm1_cores |          2 |          2 |       0 |    0 |      0 |      0 |      0 |    0 |          0 |
+|       u_q1                        |            mm_ws_systolic__46 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q2                        |            mm_ws_systolic__47 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q3                        |            mm_ws_systolic__48 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q4                        |            mm_ws_systolic__49 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q5                        |            mm_ws_systolic__50 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q6                        |            mm_ws_systolic__51 |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|       u_q7                        |                mm_ws_systolic |        410 |        319 |       0 |   91 |   1514 |      0 |      0 |    0 |         64 |
+|     u_strassen_post               |                 strassen_post |       3105 |       3105 |       0 |    0 |   3938 |      0 |      0 |    0 |          0 |
+|     u_strassen_pre                |                  strassen_pre |       1633 |       1633 |       0 |    0 |   1986 |      0 |      0 |    0 |          0 |
+|   u_top_strassen_post             | strassen_post__parameterized0 |      12929 |      12929 |       0 |    0 |  16403 |      0 |      0 |    0 |          0 |
+|   u_top_strassen_pre              |  strassen_pre__parameterized0 |       6145 |       6145 |       0 |    0 |   7490 |      0 |      0 |    0 |          0 |
++-----------------------------------+-------------------------------+------------+------------+---------+------+--------+--------+--------+------+------------+
+
+
