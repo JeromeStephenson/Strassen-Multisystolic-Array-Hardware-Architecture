@@ -1,0 +1,123 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1 (win64) Build 2902540 Wed May 27 19:54:49 MDT 2020
+| Date         : Sat Oct 31 23:24:06 2026
+| Host         : DESKTOP-D6P5K5D running 64-bit major release  (build 9200)
+| Command      : report_utilization -hierarchical -file reports_synth/smm2_top_dbuf_synth_util_hier.rpt
+| Design       : mxu_synth_wrap
+| Device       : xcku115flva1517-1
+| Design State : Synthesized
+--------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++-----------------------------------------------+-------------------------------+------------+------------+---------+------+--------+--------+--------+------+------------+
+|                    Instance                   |             Module            | Total LUTs | Logic LUTs | LUTRAMs | SRLs |   FFs  | RAMB36 | RAMB18 | URAM | DSP Blocks |
++-----------------------------------------------+-------------------------------+------------+------------+---------+------+--------+--------+--------+------+------------+
+| mxu_synth_wrap                                |                         (top) |     101389 |      96930 |       0 | 4459 | 207198 |      0 |      0 |    0 |       3136 |
+|   (mxu_synth_wrap)                            |                         (top) |          2 |          2 |       0 |    0 |  10768 |      0 |      0 |    0 |          0 |
+|   g_dut.u_dut                                 |                 smm2_top_dbuf |     101387 |      96928 |       0 | 4459 | 196430 |      0 |      0 |    0 |       3136 |
+|     (g_dut.u_dut)                             |                 smm2_top_dbuf |         28 |         28 |       0 |    0 |     22 |      0 |      0 |    0 |          0 |
+|     g_smm1_cores_dbuf[0].u_smm1_core_dbuf     |             smm1_core_dbuf__1 |      11755 |      11118 |       0 |  637 |  24645 |      0 |      0 |    0 |        448 |
+|       (g_smm1_cores_dbuf[0].u_smm1_core_dbuf) |             smm1_core_dbuf__1 |          1 |          1 |       0 |    0 |      3 |      0 |      0 |    0 |          0 |
+|       u_smm1_cores_dbuf                       |            smm1_cores_dbuf__1 |       7016 |       6379 |       0 |  637 |  18718 |      0 |      0 |    0 |        448 |
+|         (u_smm1_cores_dbuf)                   |            smm1_cores_dbuf__1 |          2 |          2 |       0 |    0 |      0 |      0 |      0 |    0 |          0 |
+|         u_q1                                  |        mm_ws_systolic_dbuf__4 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q2                                  |        mm_ws_systolic_dbuf__5 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q3                                  |        mm_ws_systolic_dbuf__6 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q4                                  |        mm_ws_systolic_dbuf__7 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q5                                  |        mm_ws_systolic_dbuf__8 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q6                                  |        mm_ws_systolic_dbuf__9 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q7                                  |       mm_ws_systolic_dbuf__10 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|       u_strassen_post                         |              strassen_post__1 |       3105 |       3105 |       0 |    0 |   3938 |      0 |      0 |    0 |          0 |
+|       u_strassen_pre                          |               strassen_pre__1 |       1633 |       1633 |       0 |    0 |   1986 |      0 |      0 |    0 |          0 |
+|     g_smm1_cores_dbuf[1].u_smm1_core_dbuf     |             smm1_core_dbuf__2 |      11755 |      11118 |       0 |  637 |  24645 |      0 |      0 |    0 |        448 |
+|       (g_smm1_cores_dbuf[1].u_smm1_core_dbuf) |             smm1_core_dbuf__2 |          1 |          1 |       0 |    0 |      3 |      0 |      0 |    0 |          0 |
+|       u_smm1_cores_dbuf                       |            smm1_cores_dbuf__2 |       7016 |       6379 |       0 |  637 |  18718 |      0 |      0 |    0 |        448 |
+|         (u_smm1_cores_dbuf)                   |            smm1_cores_dbuf__2 |          2 |          2 |       0 |    0 |      0 |      0 |      0 |    0 |          0 |
+|         u_q1                                  |       mm_ws_systolic_dbuf__11 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q2                                  |       mm_ws_systolic_dbuf__12 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q3                                  |       mm_ws_systolic_dbuf__13 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q4                                  |       mm_ws_systolic_dbuf__14 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q5                                  |       mm_ws_systolic_dbuf__15 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q6                                  |       mm_ws_systolic_dbuf__16 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q7                                  |       mm_ws_systolic_dbuf__17 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|       u_strassen_post                         |              strassen_post__2 |       3105 |       3105 |       0 |    0 |   3938 |      0 |      0 |    0 |          0 |
+|       u_strassen_pre                          |               strassen_pre__2 |       1633 |       1633 |       0 |    0 |   1986 |      0 |      0 |    0 |          0 |
+|     g_smm1_cores_dbuf[2].u_smm1_core_dbuf     |             smm1_core_dbuf__3 |      11755 |      11118 |       0 |  637 |  24645 |      0 |      0 |    0 |        448 |
+|       (g_smm1_cores_dbuf[2].u_smm1_core_dbuf) |             smm1_core_dbuf__3 |          1 |          1 |       0 |    0 |      3 |      0 |      0 |    0 |          0 |
+|       u_smm1_cores_dbuf                       |            smm1_cores_dbuf__3 |       7016 |       6379 |       0 |  637 |  18718 |      0 |      0 |    0 |        448 |
+|         (u_smm1_cores_dbuf)                   |            smm1_cores_dbuf__3 |          2 |          2 |       0 |    0 |      0 |      0 |      0 |    0 |          0 |
+|         u_q1                                  |       mm_ws_systolic_dbuf__18 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q2                                  |       mm_ws_systolic_dbuf__19 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q3                                  |       mm_ws_systolic_dbuf__20 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q4                                  |       mm_ws_systolic_dbuf__21 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q5                                  |       mm_ws_systolic_dbuf__22 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q6                                  |       mm_ws_systolic_dbuf__23 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q7                                  |       mm_ws_systolic_dbuf__24 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|       u_strassen_post                         |              strassen_post__3 |       3105 |       3105 |       0 |    0 |   3938 |      0 |      0 |    0 |          0 |
+|       u_strassen_pre                          |               strassen_pre__3 |       1633 |       1633 |       0 |    0 |   1986 |      0 |      0 |    0 |          0 |
+|     g_smm1_cores_dbuf[3].u_smm1_core_dbuf     |             smm1_core_dbuf__4 |      11755 |      11118 |       0 |  637 |  24645 |      0 |      0 |    0 |        448 |
+|       (g_smm1_cores_dbuf[3].u_smm1_core_dbuf) |             smm1_core_dbuf__4 |          1 |          1 |       0 |    0 |      3 |      0 |      0 |    0 |          0 |
+|       u_smm1_cores_dbuf                       |            smm1_cores_dbuf__4 |       7016 |       6379 |       0 |  637 |  18718 |      0 |      0 |    0 |        448 |
+|         (u_smm1_cores_dbuf)                   |            smm1_cores_dbuf__4 |          2 |          2 |       0 |    0 |      0 |      0 |      0 |    0 |          0 |
+|         u_q1                                  |       mm_ws_systolic_dbuf__25 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q2                                  |       mm_ws_systolic_dbuf__26 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q3                                  |       mm_ws_systolic_dbuf__27 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q4                                  |       mm_ws_systolic_dbuf__28 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q5                                  |       mm_ws_systolic_dbuf__29 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q6                                  |       mm_ws_systolic_dbuf__30 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q7                                  |       mm_ws_systolic_dbuf__31 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|       u_strassen_post                         |              strassen_post__4 |       3105 |       3105 |       0 |    0 |   3938 |      0 |      0 |    0 |          0 |
+|       u_strassen_pre                          |               strassen_pre__4 |       1633 |       1633 |       0 |    0 |   1986 |      0 |      0 |    0 |          0 |
+|     g_smm1_cores_dbuf[4].u_smm1_core_dbuf     |             smm1_core_dbuf__5 |      11755 |      11118 |       0 |  637 |  24645 |      0 |      0 |    0 |        448 |
+|       (g_smm1_cores_dbuf[4].u_smm1_core_dbuf) |             smm1_core_dbuf__5 |          1 |          1 |       0 |    0 |      3 |      0 |      0 |    0 |          0 |
+|       u_smm1_cores_dbuf                       |            smm1_cores_dbuf__5 |       7016 |       6379 |       0 |  637 |  18718 |      0 |      0 |    0 |        448 |
+|         (u_smm1_cores_dbuf)                   |            smm1_cores_dbuf__5 |          2 |          2 |       0 |    0 |      0 |      0 |      0 |    0 |          0 |
+|         u_q1                                  |       mm_ws_systolic_dbuf__32 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q2                                  |       mm_ws_systolic_dbuf__33 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q3                                  |       mm_ws_systolic_dbuf__34 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q4                                  |       mm_ws_systolic_dbuf__35 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q5                                  |       mm_ws_systolic_dbuf__36 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q6                                  |       mm_ws_systolic_dbuf__37 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q7                                  |       mm_ws_systolic_dbuf__38 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|       u_strassen_post                         |              strassen_post__5 |       3105 |       3105 |       0 |    0 |   3938 |      0 |      0 |    0 |          0 |
+|       u_strassen_pre                          |               strassen_pre__5 |       1633 |       1633 |       0 |    0 |   1986 |      0 |      0 |    0 |          0 |
+|     g_smm1_cores_dbuf[5].u_smm1_core_dbuf     |             smm1_core_dbuf__6 |      11755 |      11118 |       0 |  637 |  24645 |      0 |      0 |    0 |        448 |
+|       (g_smm1_cores_dbuf[5].u_smm1_core_dbuf) |             smm1_core_dbuf__6 |          1 |          1 |       0 |    0 |      3 |      0 |      0 |    0 |          0 |
+|       u_smm1_cores_dbuf                       |            smm1_cores_dbuf__6 |       7016 |       6379 |       0 |  637 |  18718 |      0 |      0 |    0 |        448 |
+|         (u_smm1_cores_dbuf)                   |            smm1_cores_dbuf__6 |          2 |          2 |       0 |    0 |      0 |      0 |      0 |    0 |          0 |
+|         u_q1                                  |       mm_ws_systolic_dbuf__39 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q2                                  |       mm_ws_systolic_dbuf__40 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q3                                  |       mm_ws_systolic_dbuf__41 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q4                                  |       mm_ws_systolic_dbuf__42 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q5                                  |       mm_ws_systolic_dbuf__43 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q6                                  |       mm_ws_systolic_dbuf__44 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q7                                  |       mm_ws_systolic_dbuf__45 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|       u_strassen_post                         |              strassen_post__6 |       3105 |       3105 |       0 |    0 |   3938 |      0 |      0 |    0 |          0 |
+|       u_strassen_pre                          |               strassen_pre__6 |       1633 |       1633 |       0 |    0 |   1986 |      0 |      0 |    0 |          0 |
+|     g_smm1_cores_dbuf[6].u_smm1_core_dbuf     |                smm1_core_dbuf |      11755 |      11118 |       0 |  637 |  24645 |      0 |      0 |    0 |        448 |
+|       (g_smm1_cores_dbuf[6].u_smm1_core_dbuf) |                smm1_core_dbuf |          1 |          1 |       0 |    0 |      3 |      0 |      0 |    0 |          0 |
+|       u_smm1_cores_dbuf                       |               smm1_cores_dbuf |       7016 |       6379 |       0 |  637 |  18718 |      0 |      0 |    0 |        448 |
+|         (u_smm1_cores_dbuf)                   |               smm1_cores_dbuf |          2 |          2 |       0 |    0 |      0 |      0 |      0 |    0 |          0 |
+|         u_q1                                  |       mm_ws_systolic_dbuf__46 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q2                                  |       mm_ws_systolic_dbuf__47 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q3                                  |       mm_ws_systolic_dbuf__48 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q4                                  |       mm_ws_systolic_dbuf__49 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q5                                  |       mm_ws_systolic_dbuf__50 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q6                                  |       mm_ws_systolic_dbuf__51 |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|         u_q7                                  |           mm_ws_systolic_dbuf |       1002 |        911 |       0 |   91 |   2674 |      0 |      0 |    0 |         64 |
+|       u_strassen_post                         |                 strassen_post |       3105 |       3105 |       0 |    0 |   3938 |      0 |      0 |    0 |          0 |
+|       u_strassen_pre                          |                  strassen_pre |       1633 |       1633 |       0 |    0 |   1986 |      0 |      0 |    0 |          0 |
+|     u_top_strassen_post                       | strassen_post__parameterized0 |      12929 |      12929 |       0 |    0 |  16403 |      0 |      0 |    0 |          0 |
+|     u_top_strassen_pre                        |  strassen_pre__parameterized0 |       6145 |       6145 |       0 |    0 |   7490 |      0 |      0 |    0 |          0 |
++-----------------------------------------------+-------------------------------+------------+------------+---------+------+--------+--------+--------+------+------------+
+
+
