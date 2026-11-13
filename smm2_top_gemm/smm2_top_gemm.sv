@@ -1,28 +1,8 @@
 //=============================================================================
 // smm2_top_gemm.sv
-//
-// Paper-style overlapped multi-tile SMM2 top with double-buffered B/S loading
-// and current-A / next-B overlap.
-//
-// For num_tiles = T:
-//   B stream: B_tile_0 rows 0..7, B_tile_1 rows 0..7, ... B_tile_T-1 rows 0..7
-//   A stream: A_tile_0 rows 0..7, A_tile_1 rows 0..7, ... A_tile_T-1 rows 0..7
-//   C stream: C_tile_0 rows 0..7, C_tile_1 rows 0..7, ... C_tile_T-1 rows 0..7
-//
-// Paper-style behavior:
-//   - B_tile_0 is first loaded into the shadow buffer through the recursive
-//     Strassen pre-addition network.
-//   - Buffers are swapped.
-//   - A_tile_0 is multiplied using the active buffer.
-//   - While A_tile_0 is being multiplied, B_tile_1 is loaded into the shadow
-//     buffer if available.
-//   - After C_tile_0 is drained and B_tile_1 is loaded, buffers are swapped.
-//   - The process repeats.
-//
-// Notes:
-//   - num_tiles must be stable when start is asserted.
-//   - start should be a one-cycle pulse.
-//   - c_valid has no backpressure in this bring-up version.
+// Paper-style overlapped multi-tile SMM2 top with double-buffered B/S loading.
+// FIXED: Removed ST_SWAP_NEXT bottleneck. A-stream is now continuous, and 
+// banks are swapped exactly at the A-row boundary to hide the C-drain latency.
 //=============================================================================
 
 (* keep_hierarchy = "yes" *)
@@ -42,6 +22,7 @@ module smm2_top_gemm #(
     parameter int OUT_W        = SUB_OUT_W + 2,        // 52
 
     parameter int TILE_CNT_W   = 16
+    
 ) (
     input  logic                                                clk,
     input  logic                                                rst_n,
@@ -85,7 +66,7 @@ module smm2_top_gemm #(
         ST_LOAD_FIRST_B,
         ST_SWAP_FIRST,
         ST_COMPUTE_TILE,
-        ST_SWAP_NEXT,
+        ST_DRAIN_LAST,
         ST_DONE
     } state_e;
 
@@ -98,13 +79,20 @@ module smm2_top_gemm #(
     logic [CNT_W-1:0] b_cnt;
     logic [CNT_W-1:0] s_load_cnt;
     logic [CNT_W-1:0] a_cnt;
-    logic [CNT_W-1:0] c_cnt;
+    logic [31:0] total_a_cnt;
+    logic [31:0] total_c_cnt;
+
+    logic last_tile;
+    assign last_tile = (tile_idx == num_tiles - TILE_CNT_W'(1));
+
+    logic all_a_streamed;
+    assign all_a_streamed = (total_a_cnt == (32'(num_tiles) * 32'(BLOCK_N)));
+
+    logic all_c_drained;
+    assign all_c_drained = (total_c_cnt == (32'(num_tiles) * 32'(BLOCK_N)));
 
     //-------------------------------------------------------------------------
     // Top-level delayed load row
-    //
-    // Top pre-addition delays b_valid by one cycle. Therefore the row index
-    // must also be delayed by one cycle before entering each smm1_core_dbuf.
     //-------------------------------------------------------------------------
     logic [ROW_IDX_W-1:0] top_load_row_d;
 
@@ -117,25 +105,9 @@ module smm2_top_gemm #(
     logic top_t_valid;
     logic top_s_valid;
 
-    logic signed [TOP_T_BITS-1:0] top_t1;
-    logic signed [TOP_T_BITS-1:0] top_t2;
-    logic signed [TOP_T_BITS-1:0] top_t3;
-    logic signed [TOP_T_BITS-1:0] top_t4;
-    logic signed [TOP_T_BITS-1:0] top_t5;
-    logic signed [TOP_T_BITS-1:0] top_t6;
-    logic signed [TOP_T_BITS-1:0] top_t7;
+    logic signed [TOP_T_BITS-1:0] top_t1, top_t2, top_t3, top_t4, top_t5, top_t6, top_t7;
+    logic signed [TOP_T_BITS-1:0] top_s1, top_s2, top_s3, top_s4, top_s5, top_s6, top_s7;
 
-    logic signed [TOP_T_BITS-1:0] top_s1;
-    logic signed [TOP_T_BITS-1:0] top_s2;
-    logic signed [TOP_T_BITS-1:0] top_s3;
-    logic signed [TOP_T_BITS-1:0] top_s4;
-    logic signed [TOP_T_BITS-1:0] top_s5;
-    logic signed [TOP_T_BITS-1:0] top_s6;
-    logic signed [TOP_T_BITS-1:0] top_s7;
-
-    //-------------------------------------------------------------------------
-    // Arrays for seven double-buffered SMM1 subcores
-    //-------------------------------------------------------------------------
     logic signed [TOP_T_BITS-1:0]   top_t [7];
     logic signed [TOP_T_BITS-1:0]   top_s [7];
 
@@ -153,7 +125,12 @@ module smm2_top_gemm #(
     //-------------------------------------------------------------------------
     logic swap;
 
-    assign swap        = (state == ST_SWAP_FIRST) || (state == ST_SWAP_NEXT);
+    // Swap pulses on the posedge accepting the LAST A row of a tile,
+    // so the new bank is active exactly when the next tile's first row enters
+    assign swap = (state == ST_SWAP_FIRST) 
+                | ((state == ST_COMPUTE_TILE) && pre_a_valid 
+                   && (a_cnt == CNT_W'(BLOCK_N-1)) && !last_tile);
+                   
     assign active_bank = core_active_bank[0];
 
     //-------------------------------------------------------------------------
@@ -167,25 +144,12 @@ module smm2_top_gemm #(
     logic signed [TOP_QUAD_OUT_BITS-1:0] c22_top;
 
     //-------------------------------------------------------------------------
-    // Tile control helpers
-    //-------------------------------------------------------------------------
-    logic need_next_b;
-    logic last_tile;
-
-    assign need_next_b = ((tile_idx + TILE_CNT_W'(1)) < num_tiles);
-    assign last_tile   = (num_tiles == '0)
-                       ? 1'b0
-                       : (tile_idx == (num_tiles - TILE_CNT_W'(1)));
-
-    //-------------------------------------------------------------------------
     // Input handshakes
     //-------------------------------------------------------------------------
-    assign b_ready = ((state == ST_LOAD_FIRST_B) ||
-                    ((state == ST_COMPUTE_TILE) && need_next_b))
-                && (b_cnt < CNT_W'(BLOCK_N));
+    assign b_ready = ((state == ST_LOAD_FIRST_B) || 
+                      ((state == ST_COMPUTE_TILE) && !last_tile && (b_cnt < CNT_W'(BLOCK_N))));
 
-    assign a_ready = (state == ST_COMPUTE_TILE)
-                && (a_cnt < CNT_W'(BLOCK_N));
+    assign a_ready = (state == ST_COMPUTE_TILE) && !all_a_streamed;
 
     assign pre_b_valid = b_ready & b_valid;
     assign pre_a_valid = a_ready & a_valid;
@@ -197,23 +161,10 @@ module smm2_top_gemm #(
         if (!rst_n) begin
             top_load_row_d <= '0;
         end else begin
-            if (pre_b_valid) begin
-                top_load_row_d <= b_cnt[ROW_IDX_W-1:0];
-            end else if ((state == ST_SWAP_FIRST) || (state == ST_SWAP_NEXT)) begin
-                top_load_row_d <= '0;
-            end
+            if (swap) top_load_row_d <= '0;
+            else if (pre_b_valid) top_load_row_d <= b_cnt[ROW_IDX_W-1:0];
         end
     end
-
-    //-------------------------------------------------------------------------
-    // Tile completion condition
-    //-------------------------------------------------------------------------
-    logic current_tile_c_done;
-    logic next_b_loaded_or_not_needed;
-
-    assign current_tile_c_done           = (c_cnt == CNT_W'(BLOCK_N));
-    assign next_b_loaded_or_not_needed   = last_tile
-                                        || (s_load_cnt == CNT_W'(BLOCK_N));
 
     //-------------------------------------------------------------------------
     // Counters
@@ -224,68 +175,45 @@ module smm2_top_gemm #(
             b_cnt      <= '0;
             s_load_cnt <= '0;
             a_cnt      <= '0;
-            c_cnt      <= '0;
+            total_a_cnt <= '0;
+            total_c_cnt <= '0;
         end else begin
-            case (state)
-                ST_IDLE: begin
-                    if (start) begin
-                        tile_idx   <= '0;
-                        b_cnt      <= '0;
-                        s_load_cnt <= '0;
-                        a_cnt      <= '0;
-                        c_cnt      <= '0;
-                    end
-                end
-
-                ST_LOAD_FIRST_B: begin
-                    if (pre_b_valid) begin
-                        b_cnt <= b_cnt + CNT_W'(1);
-                    end
-
-                    // Count the actual lowest-level load enables from one
-                    // representative SMM1 subcore. core_load_en[0] already
-                    // accounts for the two-level Strassen pre-addition latency.
-                    if (core_load_en[0]) begin
-                        s_load_cnt <= s_load_cnt + CNT_W'(1);
-                    end
-                end
-
-                ST_SWAP_FIRST: begin
-                    tile_idx   <= '0;
-                    b_cnt      <= '0;
+            if (state == ST_IDLE && start) begin
+                tile_idx   <= '0;
+                b_cnt      <= '0;
+                s_load_cnt <= '0;
+                a_cnt      <= '0;
+                total_a_cnt <= '0;
+                total_c_cnt <= '0;
+            end else begin
+                if (swap) begin
+                    b_cnt <= '0;
                     s_load_cnt <= '0;
-                    a_cnt      <= '0;
-                    c_cnt      <= '0;
+                end else begin
+                    if (pre_b_valid) begin
+                        if (b_cnt == CNT_W'(BLOCK_N-1)) b_cnt <= '0;
+                        else b_cnt <= b_cnt + CNT_W'(1);
+                    end
+                    if (core_load_en[0]) begin
+                        if (s_load_cnt == CNT_W'(BLOCK_N-1)) s_load_cnt <= '0;
+                        else s_load_cnt <= s_load_cnt + CNT_W'(1);
+                    end
                 end
 
-                ST_COMPUTE_TILE: begin
-                    if (pre_a_valid) begin
+                if (pre_a_valid) begin
+                    total_a_cnt <= total_a_cnt + 1;
+                    if (a_cnt == CNT_W'(BLOCK_N-1)) begin
+                        a_cnt <= '0;
+                        if (!last_tile) tile_idx <= tile_idx + TILE_CNT_W'(1);
+                    end else begin
                         a_cnt <= a_cnt + CNT_W'(1);
                     end
-
-                    if (pre_b_valid) begin
-                        b_cnt <= b_cnt + CNT_W'(1);
-                    end
-
-                    if (core_load_en[0]) begin
-                        s_load_cnt <= s_load_cnt + CNT_W'(1);
-                    end
-
-                    if (c_valid) begin
-                        c_cnt <= c_cnt + CNT_W'(1);
-                    end
                 end
 
-                ST_SWAP_NEXT: begin
-                    tile_idx   <= tile_idx + TILE_CNT_W'(1);
-                    b_cnt      <= '0;
-                    s_load_cnt <= '0;
-                    a_cnt      <= '0;
-                    c_cnt      <= '0;
+                if (c_valid) begin
+                    total_c_cnt <= total_c_cnt + 1;
                 end
-
-                default: ;
-            endcase
+            end
         end
     end
 
@@ -294,43 +222,32 @@ module smm2_top_gemm #(
     //-------------------------------------------------------------------------
     always_comb begin
         state_next = state;
-
         case (state)
             ST_IDLE: begin
-                if (start) begin
-                    if (num_tiles == '0) state_next = ST_DONE;
-                    else                 state_next = ST_LOAD_FIRST_B;
-                end
+                if (start) state_next = (num_tiles == '0) ? ST_DONE : ST_LOAD_FIRST_B;
             end
-
             ST_LOAD_FIRST_B: begin
-                if (s_load_cnt == CNT_W'(BLOCK_N)) begin
+                if (core_load_en[0] && s_load_cnt == CNT_W'(BLOCK_N-1)) begin
                     state_next = ST_SWAP_FIRST;
                 end
             end
-
             ST_SWAP_FIRST: begin
                 state_next = ST_COMPUTE_TILE;
             end
-
             ST_COMPUTE_TILE: begin
-                if (current_tile_c_done && next_b_loaded_or_not_needed) begin
-                    if (last_tile) state_next = ST_DONE;
-                    else           state_next = ST_SWAP_NEXT;
+                if (all_a_streamed) begin
+                    state_next = ST_DRAIN_LAST;
                 end
             end
-
-            ST_SWAP_NEXT: begin
-                state_next = ST_COMPUTE_TILE;
+            ST_DRAIN_LAST: begin
+                if (all_c_drained) begin
+                    state_next = ST_DONE;
+                end
             end
-
             ST_DONE: begin
                 state_next = ST_IDLE;
             end
-
-            default: begin
-                state_next = ST_IDLE;
-            end
+            default: state_next = ST_IDLE;
         endcase
     end
 
@@ -363,44 +280,19 @@ module smm2_top_gemm #(
         .a_row    (a_row),
         .b_row    (b_row),
 
-        .t1       (top_t1),
-        .t2       (top_t2),
-        .t3       (top_t3),
-        .t4       (top_t4),
-        .t5       (top_t5),
-        .t6       (top_t6),
-        .t7       (top_t7),
-
-        .s1       (top_s1),
-        .s2       (top_s2),
-        .s3       (top_s3),
-        .s4       (top_s4),
-        .s5       (top_s5),
-        .s6       (top_s6),
-        .s7       (top_s7),
+        .t1       (top_t1), .t2       (top_t2), .t3       (top_t3), .t4       (top_t4),
+        .t5       (top_t5), .t6       (top_t6), .t7       (top_t7),
+        .s1       (top_s1), .s2       (top_s2), .s3       (top_s3), .s4       (top_s4),
+        .s5       (top_s5), .s6       (top_s6), .s7       (top_s7),
 
         .t_valid  (top_t_valid),
         .s_valid  (top_s_valid)
     );
 
-    //-------------------------------------------------------------------------
-    // Assign top-level T/S vectors into arrays
-    //-------------------------------------------------------------------------
-    assign top_t[0] = top_t1;
-    assign top_t[1] = top_t2;
-    assign top_t[2] = top_t3;
-    assign top_t[3] = top_t4;
-    assign top_t[4] = top_t5;
-    assign top_t[5] = top_t6;
-    assign top_t[6] = top_t7;
-
-    assign top_s[0] = top_s1;
-    assign top_s[1] = top_s2;
-    assign top_s[2] = top_s3;
-    assign top_s[3] = top_s4;
-    assign top_s[4] = top_s5;
-    assign top_s[5] = top_s6;
-    assign top_s[6] = top_s7;
+    assign top_t[0] = top_t1; assign top_t[1] = top_t2; assign top_t[2] = top_t3; assign top_t[3] = top_t4;
+    assign top_t[4] = top_t5; assign top_t[5] = top_t6; assign top_t[6] = top_t7;
+    assign top_s[0] = top_s1; assign top_s[1] = top_s2; assign top_s[2] = top_s3; assign top_s[3] = top_s4;
+    assign top_s[4] = top_s5; assign top_s[5] = top_s6; assign top_s[6] = top_s7;
 
     //-------------------------------------------------------------------------
     // Seven double-buffered SMM1 subcores
@@ -412,6 +304,7 @@ module smm2_top_gemm #(
             .MID_W  (SUB_MID_W),
             .ACC_W  (ACC_W),
             .OUT_W  (SUB_OUT_W)
+            
         ) u_smm1_core_dbuf (
             .clk           (clk),
             .rst_n         (rst_n),
@@ -434,9 +327,6 @@ module smm2_top_gemm #(
         );
     end
 
-    //-------------------------------------------------------------------------
-    // All seven SMM1 subcores have identical latency.
-    //-------------------------------------------------------------------------
     assign q_valid = &core_c_valid;
 
     //-------------------------------------------------------------------------
@@ -453,13 +343,8 @@ module smm2_top_gemm #(
 
         .in_valid  (q_valid),
 
-        .q1        (core_c[0]),
-        .q2        (core_c[1]),
-        .q3        (core_c[2]),
-        .q4        (core_c[3]),
-        .q5        (core_c[4]),
-        .q6        (core_c[5]),
-        .q7        (core_c[6]),
+        .q1        (core_c[0]), .q2        (core_c[1]), .q3        (core_c[2]), .q4        (core_c[3]),
+        .q5        (core_c[4]), .q6        (core_c[5]), .q7        (core_c[6]),
 
         .c11       (c11_top),
         .c12       (c12_top),
@@ -472,7 +357,7 @@ module smm2_top_gemm #(
     //-------------------------------------------------------------------------
     // Output C stream
     //-------------------------------------------------------------------------
-    assign c_valid = c_valid_post & (state == ST_COMPUTE_TILE);
+    assign c_valid = c_valid_post & ((state == ST_COMPUTE_TILE) || (state == ST_DRAIN_LAST));
     assign c_row   = {c22_top, c21_top, c12_top, c11_top};
 
 endmodule
